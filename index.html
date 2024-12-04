@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Royal Style Carousel Cards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                #F4E7F8,
+                #F2DDDC,
+                #F6BCBA,
+                #E3AADD,
+                #C8A8E9,
+                #C3C7F4
+            ) fixed;
+        }
+
+        body {
+            height: 100%;
+            overflow-x: hidden;
+            position: fixed;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            touch-action: none;
+            overscroll-behavior: none;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+.card {
+    position: absolute;
+    width: 350px; /* Tăng từ 300px lên 350px */
+    height: 550px; /* Tăng từ 500px lên 550px */
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 
+        0 0 0 2px rgba(255, 215, 0, 1),
+        0 0 0 3px rgba(255, 215, 0, 0.5),
+        0 8px 30px rgba(0, 0, 0, 0.15);
+    transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transform-origin: center center; /* Thêm điểm gốc transform */
+}
+
+.card.prev {
+    transform: translateX(-120%) scale(0.85); /* Tăng khoảng cách từ -90% lên -120% */
+}
+
+.card.next {
+    transform: translateX(120%) scale(0.85); /* Tăng khoảng cách từ 90% lên 120% */
+}
+
+@media (max-width: 768px) {
+    .card {
+        width: 320px; /* Điều chỉnh cho mobile */
+        height: 520px;
+    }
+
+    .card.prev {
+        transform: translateX(-100%) scale(0.85);
+    }
+
+    .card.next {
+        transform: translateX(100%) scale(0.85);
+    }
+}
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid transparent;
+            border-image: linear-gradient(
+                45deg,
+                rgba(255, 215, 0, 1),
+                rgba(218, 165, 32, 1),
+                rgba(255, 215, 0, 1)
+            ) 1;
+            border-radius: 15px;
+            pointer-events: none;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .card .corner {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            pointer-events: none;
+        }
+
+        .card .corner-top-left {
+            top: 5px;
+            left: 5px;
+            border-right: none;
+            border-bottom: none;
+            border-top-left-radius: 10px;
+        }
+
+        .card .corner-top-right {
+            top: 5px;
+            right: 5px;
+            border-left: none;
+            border-bottom: none;
+            border-top-right-radius: 10px;
+        }
+
+        .card .corner-bottom-left {
+            bottom: 5px;
+            left: 5px;
+            border-right: none;
+            border-top: none;
+            border-bottom-left-radius: 10px;
+        }
+
+        .card .corner-bottom-right {
+            bottom: 5px;
+            right: 5px;
+            border-left: none;
+            border-top: none;
+            border-bottom-right-radius: 10px;
+        }
+
+        .card img {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-select: none;
+            transition: transform 0.3s ease;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 20px;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0.98),
+                rgba(255, 252, 240, 0.98)
+            );
+            position: relative;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #333;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .card-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(
+                to right,
+                transparent,
+                rgba(255, 215, 0, 0.5),
+                transparent
+            );
+        }
+
+        .card-text {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .card.active {
+            z-index: 3;
+            transform: translateX(0) scale(1);
+            opacity: 1;
+        }
+
+        .card.prev {
+            z-index: 2;
+            transform: translateX(-90%) scale(0.85);
+            opacity: 0.7;
+        }
+
+        .card.next {
+            z-index: 2;
+            transform: translateX(90%) scale(0.85);
+            opacity: 0.7;
+        }
+
+        .carousel-indicators {
+            position: fixed;
+            bottom: 30px;
+            display: none;
+            gap: 8px;
+            z-index: 4;
+        }
+
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 215, 0, 0.5);
+        }
+
+        .indicator.active {
+            width: 24px;
+            border-radius: 4px;
+            background: rgba(255, 215, 0, 0.8);
+        }
+
+        .card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 
+                0 0 0 1px rgba(255, 215, 0, 0.4),
+                0 0 0 3px rgba(255, 215, 0, 0.3),
+                0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .carousel-container {
+                height: 100dvh;
+            }
+
+            .card {
+                width: 280px;
+                height: 480px;
+            }
+
+            .card.prev {
+                transform: translateX(-70%) scale(0.85);
+            }
+
+            .card.next {
+                transform: translateX(70%) scale(0.85);
+            }
+
+            .carousel-indicators {
+                bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="carousel-container" id="carouselContainer">
+
+<!-- Card 1 -->
+        <div class="card">
+            <div class="corner corner-top-left"></div>
+            <div class="corner corner-top-right"></div>
+            <div class="corner corner-bottom-left"></div>
+            <div class="corner corner-bottom-right"></div>
+            <img src="https://images.pexels.com/photos/17420994/pexels-photo-17420994/free-photo-of-car-on-street.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Card 1">
+            <div class="card-content">
+                <h3 class="card-title">Lamborghini</h3>
+                <p class="card-text">Expect the Unexpected</p>
+            </div>
+        </div>
+
+<!-- Card 2 -->
+        <div class="card">
+            <div class="corner corner-top-left"></div>
+            <div class="corner corner-top-right"></div>
+            <div class="corner corner-bottom-left"></div>
+            <div class="corner corner-bottom-right"></div>
+            <img src="https://images.pexels.com/photos/6720668/pexels-photo-6720668.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Card 2">
+            <div class="card-content">
+                <h3 class="card-title">Mercedes-Benz</h3>
+                <p class="card-text">The Best or Nothing</p>
+            </div>
+        </div>
+
+<!-- Card 3 -->
+        <div class="card">
+            <div class="corner corner-top-left"></div>
+            <div class="corner corner-top-right"></div>
+            <div class="corner corner-bottom-left"></div>
+            <div class="corner corner-bottom-right"></div>
+            <img src="https://images.pexels.com/photos/7559058/pexels-photo-7559058.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Card 3">
+            <div class="card-content">
+                <h3 class="card-title">Audi</h3>
+                <p class="card-text">Vorsprung durch Technik</p>
+            </div>
+        </div>
+
+<!-- Card 4 -->
+<div class="card">
+    <div class="corner corner-top-left"></div>
+    <div class="corner corner-top-right"></div>
+    <div class="corner corner-bottom-left"></div>
+    <div class="corner corner-bottom-right"></div>
+    <img src="https://images.pexels.com/photos/8642186/pexels-photo-8642186.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Card 4">
+    <div class="card-content">
+        <h3 class="card-title">BMW</h3>
+        <p class="card-text">The Ultimate Driving Machine</p>
+    </div>
+</div>
+
+<!-- Card 5 -->
+<div class="card">
+    <div class="corner corner-top-left"></div>
+    <div class="corner corner-top-right"></div>
+    <div class="corner corner-bottom-left"></div>
+    <div class="corner corner-bottom-right"></div>
+    <img src="https://images.pexels.com/photos/28316101/pexels-photo-28316101/free-photo-of-a-tan-car-parked-in-front-of-a-house.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Card 5">
+    <div class="card-content">
+        <h3 class="card-title">Cadillac</h3>
+        <p class="card-text">Be Iconic</p>
+    </div>
+</div>
+
+<!-- Card 6 -->
+<div class="card">
+    <div class="corner corner-top-left"></div>
+    <div class="corner corner-top-right"></div>
+    <div class="corner corner-bottom-left"></div>
+    <div class="corner corner-bottom-right"></div>
+    <img src="https://images.pexels.com/photos/8343503/pexels-photo-8343503.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Card 5">
+    <div class="card-content">
+        <h3 class="card-title">Bentley</h3>
+        <p class="card-text">Be Extraordinary</p>
+    </div>
+</div>
+
+<!-- Card 7 -->
+<div class="card">
+    <div class="corner corner-top-left"></div>
+    <div class="corner corner-top-right"></div>
+    <div class="corner corner-bottom-left"></div>
+    <div class="corner corner-bottom-right"></div>
+    <img src="https://images.pexels.com/photos/19938880/pexels-photo-19938880/free-photo-of-mclaren-765lt-supercar.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Card 5">
+    <div class="card-content">
+        <h3 class="card-title">McLaren</h3>
+        <p class="card-text">Driven by Perfection</p>
+    </div>
+</div>
+
+<!-- Card 8 -->
+<div class="card">
+    <div class="corner corner-top-left"></div>
+    <div class="corner corner-top-right"></div>
+    <div class="corner corner-bottom-left"></div>
+    <div class="corner corner-bottom-right"></div>
+    <img src="https://images.pexels.com/photos/3764984/pexels-photo-3764984.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Card 5">
+    <div class="card-content">
+        <h3 class="card-title">Rolls-Royce</h3>
+        <p class="card-text">Inspiring Greatness</p>
+    </div>
+</div>
+
+
+    </div>
+    <div class="carousel-indicators" id="carouselIndicators"></div>
+
+    <script>
+        const cards = Array.from(document.querySelectorAll('.card'));
+        const container = document.getElementById('carouselContainer');
+        const indicators = document.getElementById('carouselIndicators');
+        let currentIndex = 0;
+        let startX = 0;
+        let startY = 0;
+        let isDragging = false;
+        let isScrolling = false;
+
+        // Create indicators
+        cards.forEach((_, index) => {
+            const indicator = document.createElement('div');
+            indicator.className = 'indicator';
+            indicator.addEventListener('click', () => goToCard(index));
+            indicators.appendChild(indicator);
+        });
+
+        const indicatorDots = Array.from(document.querySelectorAll('.indicator'));
+
+        function updateCards() {
+            cards.forEach((card, index) => {
+                card.classList.remove('active', 'prev', 'next');
+                indicatorDots[index].classList.remove('active');
+                
+                if (index === currentIndex) {
+                    card.classList.add('active');
+                    indicatorDots[index].classList.add('active');
+                } else if (index === getPrevIndex()) {
+                    card.classList.add('prev');
+                } else if (index === getNextIndex()) {
+                    card.classList.add('next');
+                }
+            });
+        }
+
+        function getPrevIndex() {
+            return (currentIndex - 1 + cards.length) % cards.length;
+        }
+
+        function getNextIndex() {
+            return (currentIndex + 1) % cards.length;
+        }
+
+        function nextCard() {
+            currentIndex = getNextIndex();
+            updateCards();
+        }
+
+        function prevCard() {
+            currentIndex = getPrevIndex();
+            updateCards();
+        }
+
+        function goToCard(index) {
+            if (index === currentIndex) return;
+            currentIndex = index;
+            updateCards();
+        }
+
+        // Touch events with improved handling
+        container.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            isScrolling = false;
+            e.preventDefault();
+        }, { passive: false });
+
+        container.addEventListener('touchmove', (e) => {
+            if (!startX || isScrolling) return;
+
+            const diffX = e.touches[0].clientX - startX;
+            const diffY = e.touches[0].clientY - startY;
+
+            if (!isScrolling) {
+                isScrolling = Math.abs(diffY) > Math.abs(diffX);
+                if (!isScrolling) {
+                    e.preventDefault();
+                }
+            }
+        }, { passive: false });
+
+        container.addEventListener('touchend', (e) => {
+            if (isScrolling) return;
+
+            const diffX = e.changedTouches[0].clientX - startX;
+            if (Math.abs(diffX) > 50) {
+                if (diffX > 0) {
+                    prevCard();
+                } else {
+                    nextCard();
+                }
+            }
+            startX = 0;
+            startY = 0;
+            e.preventDefault();
+        }, { passive: false });
+
+        // Mouse events
+        container.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            container.style.cursor = 'grabbing';
+            e.preventDefault();
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const diffX = e.clientX - startX;
+            
+            if (Math.abs(diffX) > 100) {
+                if (diffX > 0) {
+                    prevCard();
+                } else {
+                    nextCard();
+                }
+                isDragging = false;
+                container.style.cursor = 'grab';
+            }
+            e.preventDefault();
+        });
+
+        container.addEventListener('mouseup', (e) => {
+            isDragging = false;
+            container.style.cursor = 'grab';
+            e.preventDefault();
+        });
+
+        container.addEventListener('mouseleave', (e) => {
+            isDragging = false;
+            container.style.cursor = 'grab';
+            e.preventDefault();
+        });
+
+        // Prevent default touch behaviors
+        document.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Initialize
+        updateCards();
+    </script>
+</body>
+</html>
